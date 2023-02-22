@@ -2,16 +2,6 @@
 #https://learnpython.com/blog/read-csv-into-list-python/
 #https://www.geeksforgeeks.org/how-to-embed-matplotlib-graph-in-pyqt5/
 
-
-
-
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from PyQt5.QtGui import QPainter, QBrush, QPen
-from PyQt5.QtCore import Qt
-import sys
-import csv
-
 # importing various libraries
 import sys
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout
@@ -19,25 +9,14 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 import random
-
-
-"""
-# Read CSV file
-with open("plik_2.csv") as fp:
-    reader = csv.reader(fp, delimiter=",", quotechar='"')
-    #next(reader, None)  # skip the headers
-    data_read = [row for row in reader]
-    data_read_float = [float(row) for row in reader]
-print(data_read)
-print(data_read_float)
-"""
+import csv
 
 #Read CSV file once again
 file = open("plik_2.csv", "r")
 data_read = list(csv.reader(file, delimiter=","))
 file.close()
 print (data_read)
-data_read2 = [row[2] for row in data_read]
+data_read2 = [row[1] for row in data_read]
 print (data_read2)
 #axis Y - second column from csv
 data_read3 = [float(row[1]) for row in data_read[1:]]
@@ -45,6 +24,13 @@ print (data_read3)
 #axis X - second column from csv
 data_read4 = [float(row[0]) for row in data_read[1:]]
 print (data_read4)
+
+#calculate mean\averange value of both values
+sum_Y = sum(data_read3)
+sum_X = sum(data_read4)
+count_elements  = len(data_read3)
+mean_Y = sum_Y/count_elements
+mean_X = sum_X/count_elements
 
 # main window
 # which inherits QDialog
@@ -89,9 +75,12 @@ class Window(QDialog):
 
     # action called by the push button
     def plot(self):
-        # random data
-        datay = [random.random() for i in range(50)]
-        datay = [1,3,5]
+        # random data or manually put data
+        #datay = [random.random() for i in range(50)]
+        #datay = [1,3,5]
+        #datax = [1,2,3]
+
+        #data from csv file after conversion of list on float
         datay = data_read3
         datax = data_read4
 
@@ -102,7 +91,18 @@ class Window(QDialog):
         ax = self.figure.add_subplot(111)
 
         # plot data
-        ax.plot(datax,datay, '*')
+        #ax.plot(datax,datay, '*')
+
+        #or we try scatter
+        ax.scatter(datax,datay,label='Punkty pracy')
+        #averange/mean value
+        ax.scatter(mean_X,mean_Y, label='Średni punkt pracy')
+        #cosmetics
+        ax.grid(True)
+        ax.set_title('Charakterystyka mechaniczna')
+        ax.set_xlabel('Predkosc obrotowa obr/min')
+        ax.set_ylabel('Moment obrotowy Nm')
+        ax.legend()
 
         # refresh canvas
         self.canvas.draw()
