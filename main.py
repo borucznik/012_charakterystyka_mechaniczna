@@ -31,6 +31,7 @@ with open("plik_2.csv") as fp:
 print(data_read)
 print(data_read_float)
 """
+
 #Read CSV file once again
 file = open("plik_2.csv", "r")
 data_read = list(csv.reader(file, delimiter=","))
