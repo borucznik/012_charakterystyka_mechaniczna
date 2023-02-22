@@ -12,6 +12,7 @@ def paintEvent(self, event):
     painter.setBrush(QBrush(Qt.red, Qt.SolidPattern))
     painter.drawEllipse(40, 40, 400, 400)
 
+
 """
 def dodaj():
     zmienna1 = liczba1.text()
